@@ -1,13 +1,18 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SchemaType } from "@google/generative-ai";
 import { Question } from '../types/question';
-import dotenv from "dotenv";
+import { config } from '../config';
 
-dotenv.config();
 
-const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = config.geminiApiKey;
+const geminiModel = config.geminiModel;
+
 if (!apiKey) {
   throw new Error("API key for Gemini is missing. Check your environment variables.");
+}
+
+if (!geminiModel) {
+  throw new Error("Gemini model is missing. Check your environment variables.");
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
@@ -58,7 +63,7 @@ export async function generateQuestions(
   }
 
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-pro",
+    model: geminiModel as string,
     generationConfig: {
       responseMimeType: "application/json",
       responseSchema: generateSchema(numOptions),
