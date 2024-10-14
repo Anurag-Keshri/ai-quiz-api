@@ -1,0 +1,30 @@
+[
+  {
+    "correctAnswer": 1,
+    "options": [
+      "Prints the value of a variable",
+      "Repeats a block of code multiple times",
+      "Sends an email"
+    ],
+    "question": "What does the 'echo' statement do in PHP?"
+  },
+  {
+    "correctAnswer": 0,
+    "options": ["&", "$", "@"],
+    "question": "What symbol is used to indicate a variable in PHP?"
+  },
+  {
+    "correctAnswer": 2,
+    "options": [".php", ".html", ".ph"],
+    "question": "What is the standard file extension for PHP files?"
+  },
+  {
+    "correctAnswer": 1,
+    "options": [
+      "To store data in the user's browser",
+      "To process user input and interact with databases",
+      "To style the look and feel of a website"
+    ],
+    "question": "What is the primary purpose of PHP?"
+  }
+]
