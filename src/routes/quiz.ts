@@ -1,27 +1,29 @@
 import { Router, Request, Response } from 'express';
 import { generateQuestions } from '../services/gemini';
+import { formatQuestions } from '../services/question-formatter';
 
 const router = Router();
 
 router.get('/ping', (req: Request, res: Response) => {
-  res.send('pong');
+	res.send('pong');
 });
 
 router.post('/generateQuestions', async (req: Request, res: Response) => {
-	const topic = req.body.topic;
-	const numQuestions = req.body.numQuestions;
-	const numOptions = req.body.numOptions;
-	const difficulty = req.body.difficulty;
-	const depth = req.body.depth;
+	const { topic, numQuestions, numOptions, difficulty, depth } = req.body;
 
-	try {		
-		const questions = await generateQuestions(topic, numQuestions, numOptions, difficulty, depth);
-		res.send(questions);
-	} catch (error) {
-		res.send((error as Error).message);
-		console.error(error);
+	if (!topic) {
+		res.status(400).send('Missing required parameters: "topic"');
+		return;
 	}
 
+	try {
+		const questions = await generateQuestions(topic, numQuestions, numOptions, difficulty, depth);
+		const formattedQuestions = formatQuestions(questions);
+		res.send(formattedQuestions);
+	} catch (error) {
+		console.error(error);
+		res.status(500).send((error as Error).message);
+	}
 });
 
 export default router;
