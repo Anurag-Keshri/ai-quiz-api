@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import quizRoutes from './routes/quiz';
+import logger from './logger';
 import { auth } from './middleware/auth';
 
 dotenv.config();
@@ -17,8 +18,8 @@ app.use(auth);
 // Routes
 app.use('/api/quiz', quizRoutes);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  logger.info(`Server is running on port ${PORT}`);
 });

@@ -6,20 +6,14 @@ export const config = {
 	internalApiKey: process.env.INTERNAL_API_KEY,
 	geminiModel: process.env.GEMINI_MODEL,
 	geminiApiKey: process.env.GEMINI_API_KEY,
+	logLevel: process.env.LOG_LEVEL,
 };
 
 const validateConfig = () => {
-	if (!config.internalApiKey) {
-		throw new Error('INTERNAL_API_KEY is not set');
-	}
-	if (!config.port) {
-		throw new Error('PORT is not set');
-	}
-	if (!config.geminiModel) {
-		throw new Error('GEMINI_MODEL is not set');
-	}
-	if (!config.geminiApiKey) {
-		throw new Error('GEMINI_API_KEY is not set');
+	for (const key in config) {
+		if (!config[key as keyof typeof config]) {
+			throw new Error(`Missing configuration value: ${key}`);
+		}
 	}
 };
 
