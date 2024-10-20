@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SchemaType } from "@google/generative-ai";
-import { Question } from '../types/question';
+import { QuizQuestion } from '../types';
 import { config } from '../config';
 import logger from '../logger'; // Import your logger
 
@@ -40,8 +40,8 @@ function generateSchema(numOptions: number) {
 					nullable: false,
 				},
 				correctAnswer: {
-					type: SchemaType.INTEGER,
-					description: "The correct answer index for the question",
+					type: SchemaType.STRING,
+					description: "The correct answer for the question",
 					nullable: false,
 				},
 			},
@@ -56,7 +56,7 @@ export async function generateQuestions(
 	numOptions: number = 4,
 	difficulty: string = "medium",
 	depth: string = "shallow"
-): Promise<Question[]> {
+): Promise<QuizQuestion[]> {
 
 	logger.info({ topic, numQuestions, numOptions, difficulty, depth }, 'Generating questions');
 
@@ -84,11 +84,11 @@ export async function generateQuestions(
 		);
 
 		const questions = result.response.text();
-		let parsedQuestions: Question[];
+		let parsedQuestions: QuizQuestion[];
 
 		try {
 			parsedQuestions = JSON.parse(questions);
-			logger.info('Successfully generated questions'); // Kept as info
+			logger.info('Successfully generated questions');
 		} catch (error) {
 			logger.error({ error: (error as Error).message }, 'Error parsing quiz questions JSON');
 			throw new Error("Error parsing quiz questions JSON: " + (error as Error).message);
