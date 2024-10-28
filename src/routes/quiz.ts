@@ -2,8 +2,11 @@ import { Router, Request, Response } from 'express';
 import { generateQuestions } from '../services/gemini';
 import { formatQuestions } from '../services/question-formatter';
 import logger from '../logger';
+import { auth } from '../middleware/auth';
 
 const router = Router();
+
+router.use(auth);
 
 router.get('/ping', (req: Request, res: Response) => {
 	logger.info('Request: /quiz/ping');
